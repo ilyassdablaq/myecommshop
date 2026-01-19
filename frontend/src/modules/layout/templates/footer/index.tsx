@@ -111,7 +111,7 @@ export default async function Footer() {
             <div className="flex flex-col gap-y-2">
               <span className="txt-small-plus txt-ui-fg-base">Our promises</span>
               <ul className="grid grid-cols-1 gap-y-2 text-ui-fg-subtle txt-small">
-                <li>Free delivery for orders over 29,90 €</li>
+                <li>Free delivery for orders over 50 €</li>
                 <li>30-day return policy</li>
                 <li>Flexible payment options</li>
               </ul>
