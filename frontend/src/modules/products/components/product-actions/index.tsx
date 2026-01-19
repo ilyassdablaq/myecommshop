@@ -37,6 +37,7 @@ export default function ProductActions({
   const countryCode = useParams().countryCode as string
 
   const [options, setOptions] = useState<Record<string, string | undefined>>({})
+  const [quantity, setQuantity] = useState<number>(1)
   const [isAdding, setIsAdding] = useState(false)
 
   // ⭐ Auto-select ONLY if no option has been chosen yet
@@ -117,11 +118,12 @@ export default function ProductActions({
 
     await addToCart({
       variantId: selectedVariant.id,
-      quantity: 1,
+      quantity: quantity,
       countryCode,
     })
 
     setIsAdding(false)
+    setQuantity(1)
   }
 
   return (
@@ -148,6 +150,41 @@ export default function ProductActions({
         </div>
 
         <ProductPrice product={product} variant={selectedVariant} />
+
+        <div className="flex gap-4 items-center">
+          <div className="flex-1">
+            <label className="text-sm font-medium text-ui-fg-base mb-2 block">
+              Menge
+            </label>
+            <div className="flex items-center border border-ui-border-base rounded-lg">
+              <button
+                onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                disabled={quantity <= 1 || isAdding || !!disabled}
+                className="px-3 py-2 text-ui-fg-muted hover:text-ui-fg-base disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                −
+              </button>
+              <input
+                type="number"
+                value={quantity}
+                onChange={(e) => {
+                  const val = parseInt(e.target.value) || 1
+                  setQuantity(Math.max(1, val))
+                }}
+                min="1"
+                disabled={isAdding || !!disabled}
+                className="flex-1 text-center py-2 border-l border-r border-ui-border-base outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+              />
+              <button
+                onClick={() => setQuantity(quantity + 1)}
+                disabled={isAdding || !!disabled}
+                className="px-3 py-2 text-ui-fg-muted hover:text-ui-fg-base disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                +
+              </button>
+            </div>
+          </div>
+        </div>
 
         <Button
           onClick={handleAddToCart}
