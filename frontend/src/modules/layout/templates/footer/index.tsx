@@ -1,6 +1,7 @@
 import { listCategories } from "@lib/data/categories"
 import { listCollections } from "@lib/data/collections"
 import { Text, clx } from "@medusajs/ui"
+import { normalizeHandle } from "@lib/util/normalize-handle"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import MedusaCTA from "@modules/layout/components/medusa-cta"
@@ -24,6 +25,54 @@ export default async function Footer() {
             </LocalizedClientLink>
           </div>
           <div className="text-small-regular gap-10 md:gap-x-16 grid grid-cols-2 sm:grid-cols-3">
+            <div className="flex flex-col gap-y-2">
+              <span className="txt-small-plus txt-ui-fg-base">Information</span>
+              <ul className="grid grid-cols-1 gap-y-2 text-ui-fg-subtle txt-small">
+                <li>
+                  <LocalizedClientLink href="/agb" className="hover:text-ui-fg-base">
+                    AGB
+                  </LocalizedClientLink>
+                </li>
+                <li>
+                  <LocalizedClientLink href="/karriere" className="hover:text-ui-fg-base">
+                    Karriere
+                  </LocalizedClientLink>
+                </li>
+                <li>
+                  <LocalizedClientLink href="/ueber-uns" className="hover:text-ui-fg-base">
+                    Über uns
+                  </LocalizedClientLink>
+                </li>
+                <li>
+                  <LocalizedClientLink href="/widerrufsrecht" className="hover:text-ui-fg-base">
+                    Widerrufsrecht
+                  </LocalizedClientLink>
+                </li>
+                <li>
+                  <LocalizedClientLink href="/datenschutz" className="hover:text-ui-fg-base">
+                    Datenschutz
+                  </LocalizedClientLink>
+                </li>
+                <li>
+                  <LocalizedClientLink href="/impressum" className="hover:text-ui-fg-base">
+                    Impressum
+                  </LocalizedClientLink>
+                </li>
+                <li>
+                  <LocalizedClientLink href="/kontakt" className="hover:text-ui-fg-base">
+                    Kontakt
+                  </LocalizedClientLink>
+                </li>
+                <li>
+                  <LocalizedClientLink
+                    href="/cookie-einstellung"
+                    className="hover:text-ui-fg-base"
+                  >
+                    Cookie Einstellung
+                  </LocalizedClientLink>
+                </li>
+              </ul>
+            </div>
             {productCategories && productCategories?.length > 0 && (
               <div className="flex flex-col gap-y-2">
                 <span className="txt-small-plus txt-ui-fg-base">
@@ -38,10 +87,12 @@ export default async function Footer() {
                       return
                     }
 
+                    // Normalisiere die Handles (Umlaute zu ASCII)
+                    const normalizedHandle = normalizeHandle(c.name)
                     const children =
                       c.category_children?.map((child) => ({
                         name: child.name,
-                        handle: child.handle,
+                        normalizedHandle: normalizeHandle(child.name),
                         id: child.id,
                       })) || null
 
@@ -55,7 +106,7 @@ export default async function Footer() {
                             "hover:text-ui-fg-base",
                             children && "txt-small-plus"
                           )}
-                          href={`/categories/${c.handle}`}
+                          href={`/categories/${normalizedHandle}`}
                           data-testid="category-link"
                         >
                           {c.name}
@@ -67,7 +118,7 @@ export default async function Footer() {
                                 <li key={child.id}>
                                   <LocalizedClientLink
                                     className="hover:text-ui-fg-base"
-                                    href={`/categories/${child.handle}`}
+                                    href={`/categories/${child.normalizedHandle}`}
                                     data-testid="category-link"
                                   >
                                     {child.name}
@@ -114,51 +165,6 @@ export default async function Footer() {
                 <li>Free delivery for orders over 50 €</li>
                 <li>30-day return policy</li>
                 <li>Flexible payment options</li>
-              </ul>
-            </div>
-            <div className="flex flex-col gap-y-2">
-              <span className="txt-small-plus txt-ui-fg-base">Information</span>
-              <ul className="grid grid-cols-1 gap-y-2 text-ui-fg-subtle txt-small">
-                <li>
-                  <LocalizedClientLink href="/agb" className="hover:text-ui-fg-base">
-                    AGB
-                  </LocalizedClientLink>
-                </li>
-                <li>
-                  <LocalizedClientLink href="/karriere" className="hover:text-ui-fg-base">
-                    Karriere
-                  </LocalizedClientLink>
-                </li>
-                <li>
-                  <LocalizedClientLink href="/ueber-uns" className="hover:text-ui-fg-base">
-                    Über uns
-                  </LocalizedClientLink>
-                </li>
-                <li>
-                  <LocalizedClientLink href="/widerrufsrecht" className="hover:text-ui-fg-base">
-                    Widerrufsrecht
-                  </LocalizedClientLink>
-                </li>
-                <li>
-                  <LocalizedClientLink href="/datenschutz" className="hover:text-ui-fg-base">
-                    Datenschutz
-                  </LocalizedClientLink>
-                </li>
-                <li>
-                  <LocalizedClientLink href="/impressum" className="hover:text-ui-fg-base">
-                    Impressum
-                  </LocalizedClientLink>
-                </li>
-                <li>
-                  <LocalizedClientLink href="/kontakt" className="hover:text-ui-fg-base">
-                    Kontakt
-                  </LocalizedClientLink>
-                </li>
-                <li>
-                  <button className="hover:text-ui-fg-base">
-                    Cookie Einstellung
-                  </button>
-                </li>
               </ul>
             </div>
           </div>

@@ -1,14 +1,15 @@
 import { Metadata } from "next"
 
 import FeaturedProducts from "@modules/home/components/featured-products"
+import FeaturedCollections from "@modules/home/components/featured-collections"
 import Hero from "@modules/home/components/hero"
 import { listCollections } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
 
 export const metadata: Metadata = {
-  title: "Medusa Next.js Starter Template",
+  title: "DAB ZONE | Premium Einrichtung für dein Zuhause",
   description:
-    "A performant frontend ecommerce starter template with Next.js 15 and Medusa.",
+    "Entdecke hochwertige Einrichtung für Küche, Flur, Wohnzimmer, Schlafzimmer und Badezimmer.",
 }
 
 export default async function Home(props: {
@@ -36,6 +37,7 @@ export default async function Home(props: {
           <FeaturedProducts collections={collections} region={region} />
         </ul>
       </div>
+      <FeaturedCollections collections={collections} />
     </>
   )
 }
