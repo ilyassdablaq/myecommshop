@@ -64,9 +64,15 @@ const Register = ({ setCurrentView }: Props) => {
             required
             type="password"
             autoComplete="new-password"
+            minLength={8}
+            pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?&quot;:{}|<>]).{8,}"
+            title="Password must be at least 8 characters and contain uppercase, lowercase, number, and special character"
             data-testid="password-input"
           />
         </div>
+        <p className="text-xs text-ui-fg-subtle mt-2 px-1">
+          Password must contain at least 8 characters including uppercase, lowercase, number, and special character
+        </p>
         <ErrorMessage error={message} data-testid="register-error" />
         <span className="text-center text-ui-fg-base text-small-regular mt-6">
           By creating an account, you agree to DAB ZONE&apos;s{" "}

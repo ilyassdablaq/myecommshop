@@ -15,6 +15,26 @@ import {
   setAuthToken,
 } from "./cookies"
 
+// Password validation helper
+function validatePassword(password: string): string | null {
+  if (password.length < 8) {
+    return "Password must be at least 8 characters long"
+  }
+  if (!/[A-Z]/.test(password)) {
+    return "Password must contain at least one uppercase letter"
+  }
+  if (!/[a-z]/.test(password)) {
+    return "Password must contain at least one lowercase letter"
+  }
+  if (!/[0-9]/.test(password)) {
+    return "Password must contain at least one number"
+  }
+  if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+    return "Password must contain at least one special character (!@#$%^&*(),.?\":{}|<>)"
+  }
+  return null
+}
+
 export const retrieveCustomer =
   async (): Promise<HttpTypes.StoreCustomer | null> => {
     const authHeaders = await getAuthHeaders()
@@ -68,6 +88,12 @@ export async function signup(_currentState: unknown, formData: FormData) {
     phone: formData.get("phone") as string,
   }
 
+  // Validate password
+  const passwordError = validatePassword(password)
+  if (passwordError) {
+    return passwordError
+  }
+
   try {
     const token = await sdk.auth.register("customer", "emailpass", {
       email: customerForm.email,
@@ -117,14 +143,17 @@ export async function login(_currentState: unknown, formData: FormData) {
         revalidateTag(customerCacheTag)
       })
   } catch (error: any) {
-    return error.toString()
+    return "Invalid email or password"
   }
 
   try {
     await transferCart()
   } catch (error: any) {
-    return error.toString()
+    // Cart transfer errors should not prevent login
+    console.error("Failed to transfer cart:", error)
   }
+
+  return null
 }
 
 export async function signout(countryCode: string) {
