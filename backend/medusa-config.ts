@@ -15,7 +15,7 @@ module.exports = defineConfig({
       jwtSecret: process.env.JWT_SECRET || "supersecret",
       cookieSecret: process.env.COOKIE_SECRET || "supersecret",
     },
-    workerMode: process.env.WORKER_MODE || "shared",
+    workerMode: (process.env.WORKER_MODE as "shared" | "worker" | "server") || "shared",
   },
   modules: {
     ...(redisUrl
