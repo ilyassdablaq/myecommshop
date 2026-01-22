@@ -1,0 +1,45 @@
+# Exclude everything not needed for backend build
+.git
+.gitignore
+frontend
+node_modules
+**/node_modules
+npm-debug.log
+yarn-error.log
+
+# Outputs
+**/dist
+**/build
+**/.next
+**/.cache
+**/.medusa
+
+# Env
+.env
+.env.local
+.env.production
+.env.*.local
+
+# IDE/OS
+.vscode
+.idea
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Logs
+logs
+*.log
+
+# Uploads & static
+uploads
+static
+
+# Tests
+coverage
+*.test.js
+*.spec.js
+
+# Allow backend
+!backend/**

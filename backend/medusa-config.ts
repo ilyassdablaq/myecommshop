@@ -17,24 +17,24 @@ module.exports = defineConfig({
     },
     workerMode: process.env.WORKER_MODE || "shared",
   },
-  modules: [
+  modules: {
     ...(redisUrl
-      ? [
-          {
+      ? {
+          eventBus: {
             resolve: "@medusajs/event-bus-redis",
             options: {
-              redisUrl: redisUrl,
+              redisUrl,
             },
           },
-          {
+          cacheService: {
             resolve: "@medusajs/cache-redis",
             options: {
-              redisUrl: redisUrl,
+              redisUrl,
             },
           },
-        ]
-      : []),
-  ],
+        }
+      : {}),
+  },
   admin: {
     backendUrl: process.env.MEDUSA_BACKEND_URL || "http://localhost:9000",
   },
