@@ -1,0 +1,60 @@
+# Dependencies
+node_modules
+npm-debug.log
+yarn-error.log
+.yarn
+
+# Build outputs
+dist
+build
+.next
+.cache
+.medusa
+
+# Environment & Config
+.env
+.env.local
+.env.production
+.env.*.local
+
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test & Coverage
+coverage
+*.test.js
+*.spec.js
+
+# Logs
+logs
+*.log
+
+# Uploads & Media
+uploads
+static
+
+# Documentation
+*.md
+!README.md
+
+# Frontend (wenn im selben Repo)
+frontend
+
+# Yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
