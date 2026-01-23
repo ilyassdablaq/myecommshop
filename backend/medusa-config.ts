@@ -2,7 +2,8 @@ import { loadEnv, defineConfig } from '@medusajs/framework/utils'
 
 loadEnv(process.env.NODE_ENV || 'development', process.cwd())
 
-const redisUrl = process.env.REDIS_URL
+const isProduction = process.env.NODE_ENV === 'production'
+const redisUrl = isProduction ? process.env.REDIS_URL : null
 
 module.exports = defineConfig({
   projectConfig: {
