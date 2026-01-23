@@ -9,6 +9,8 @@ module.exports = defineConfig({
     databaseUrl: process.env.DATABASE_URL,
     redisUrl: redisUrl,
     http: {
+      port: parseInt(process.env.PORT || "9000"),
+      host: process.env.HOST || "0.0.0.0",
       storeCors: process.env.STORE_CORS || "http://localhost:8000",
       adminCors: process.env.ADMIN_CORS || "http://localhost:9000",
       authCors: process.env.AUTH_CORS || "http://localhost:9000",
