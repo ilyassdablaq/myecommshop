@@ -1,5 +1,9 @@
 [phases.setup]
 nixPkgs = ["nodejs_20"]
+cmds = [
+	"corepack enable",
+	"corepack prepare yarn@stable --activate"
+]
 
 [phases.install]
 cmds = ["npm install --prefer-offline --no-audit"]
