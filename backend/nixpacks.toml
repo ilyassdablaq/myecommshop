@@ -6,7 +6,10 @@ cmds = [
 ]
 
 [phases.install]
-cmds = ["npm install --prefer-offline --no-audit"]
+cmds = ["yarn install --immutable"]
+
+[phases.build]
+cmds = ["yarn run build"]
 
 [start]
 cmd = "npm start"
