@@ -19,6 +19,9 @@ module.exports = defineConfig({
     workerMode: (process.env.WORKER_MODE as "shared" | "worker" | "server") || "shared",
   },
   modules: {
+    review: {
+      resolve: "./src/modules/review",
+    },
     ...(redisUrl
       ? {
           eventBus: {

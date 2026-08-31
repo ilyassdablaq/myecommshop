@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation"
 import { Suspense } from "react"
 
+import { listProductTags } from "@lib/data/product-tags"
 import InteractiveLink from "@modules/common/components/interactive-link"
 import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-grid"
 import RefinementList from "@modules/store/components/refinement-list"
@@ -9,21 +10,29 @@ import PaginatedProducts from "@modules/store/templates/paginated-products"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { HttpTypes } from "@medusajs/types"
 
-export default function CategoryTemplate({
+export default async function CategoryTemplate({
   category,
   sortBy,
   page,
   countryCode,
+  tagId,
+  priceMin,
+  priceMax,
 }: {
   category: HttpTypes.StoreProductCategory
   sortBy?: SortOptions
   page?: string
   countryCode: string
+  tagId?: string
+  priceMin?: string
+  priceMax?: string
 }) {
   const pageNumber = page ? parseInt(page) : 1
   const sort = sortBy || "created_at"
 
   if (!category || !countryCode) notFound()
+
+  const tags = await listProductTags()
 
   const parents = [] as HttpTypes.StoreProductCategory[]
 
@@ -41,7 +50,11 @@ export default function CategoryTemplate({
       className="flex flex-col small:flex-row small:items-start py-6 content-container"
       data-testid="category-container"
     >
-      <RefinementList sortBy={sort} data-testid="sort-by-container" />
+      <RefinementList
+        sortBy={sort}
+        tags={(tags ?? []).map((t) => ({ id: t.id, value: t.value }))}
+        data-testid="sort-by-container"
+      />
       <div className="w-full">
         <div className="flex flex-row mb-8 text-2xl-semi gap-4">
           {parents &&
@@ -89,6 +102,9 @@ export default function CategoryTemplate({
             page={pageNumber}
             categoryId={category.id}
             countryCode={countryCode}
+            materialTagIds={tagId ? tagId.split(",") : undefined}
+            priceMin={priceMin ? Number(priceMin) : undefined}
+            priceMax={priceMax ? Number(priceMax) : undefined}
           />
         </Suspense>
       </div>

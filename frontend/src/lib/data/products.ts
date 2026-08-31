@@ -2,6 +2,7 @@
 
 import { sdk } from "@lib/config"
 import { sortProducts } from "@lib/util/sort-products"
+import { filterProductsByPrice, PriceRange } from "@lib/util/filter-products"
 import { HttpTypes } from "@medusajs/types"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 import { getAuthHeaders, getCacheOptions } from "./cookies"
@@ -94,11 +95,13 @@ export const listProductsWithSort = async ({
   queryParams,
   sortBy = "created_at",
   countryCode,
+  priceRange,
 }: {
   page?: number
   queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductParams
   sortBy?: SortOptions
   countryCode: string
+  priceRange?: PriceRange
 }): Promise<{
   response: { products: HttpTypes.StoreProduct[]; count: number }
   nextPage: number | null
@@ -118,17 +121,22 @@ export const listProductsWithSort = async ({
   })
 
   const sortedProducts = sortProducts(products, sortBy)
+  const filteredProducts = filterProductsByPrice(sortedProducts, priceRange)
+  const hasPriceFilter =
+    priceRange?.min !== undefined || priceRange?.max !== undefined
+  const filteredCount = hasPriceFilter ? filteredProducts.length : count
 
   const pageParam = (page - 1) * limit
 
-  const nextPage = count > pageParam + limit ? pageParam + limit : null
+  const nextPage =
+    filteredCount > pageParam + limit ? pageParam + limit : null
 
-  const paginatedProducts = sortedProducts.slice(pageParam, pageParam + limit)
+  const paginatedProducts = filteredProducts.slice(pageParam, pageParam + limit)
 
   return {
     response: {
       products: paginatedProducts,
-      count,
+      count: filteredCount,
     },
     nextPage,
     queryParams,

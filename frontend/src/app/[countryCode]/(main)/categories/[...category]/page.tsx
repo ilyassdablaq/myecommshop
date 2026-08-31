@@ -13,6 +13,9 @@ type Props = {
   searchParams: Promise<{
     sortBy?: SortOptions
     page?: string
+    tag_id?: string
+    price_min?: string
+    price_max?: string
   }>
 }
 
@@ -77,7 +80,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 export default async function CategoryPage(props: Props) {
   const searchParams = await props.searchParams
   const params = await props.params
-  const { sortBy, page } = searchParams
+  const { sortBy, page, tag_id, price_min, price_max } = searchParams
 
   // Hole alle Kategorien und finde die richtige basierend auf dem normalisierten Namen
   const allCategories = await listCategories()
@@ -98,6 +101,9 @@ export default async function CategoryPage(props: Props) {
       sortBy={sortBy}
       page={page}
       countryCode={params.countryCode}
+      tagId={tag_id}
+      priceMin={price_min}
+      priceMax={price_max}
     />
   )
 }

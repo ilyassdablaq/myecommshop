@@ -10,6 +10,7 @@ type PaginatedProductsParams = {
   limit: number
   collection_id?: string[]
   category_id?: string[]
+  tag_id?: string[]
   id?: string[]
   order?: string
 }
@@ -19,6 +20,10 @@ export default async function PaginatedProducts({
   page,
   collectionId,
   categoryId,
+  categoryIds,
+  materialTagIds,
+  priceMin,
+  priceMax,
   productsIds,
   countryCode,
 }: {
@@ -26,6 +31,10 @@ export default async function PaginatedProducts({
   page: number
   collectionId?: string
   categoryId?: string
+  categoryIds?: string[]
+  materialTagIds?: string[]
+  priceMin?: number
+  priceMax?: number
   productsIds?: string[]
   countryCode: string
 }) {
@@ -39,6 +48,12 @@ export default async function PaginatedProducts({
 
   if (categoryId) {
     queryParams["category_id"] = [categoryId]
+  } else if (categoryIds && categoryIds.length > 0) {
+    queryParams["category_id"] = categoryIds
+  }
+
+  if (materialTagIds && materialTagIds.length > 0) {
+    queryParams["tag_id"] = materialTagIds
   }
 
   if (productsIds) {
@@ -62,6 +77,10 @@ export default async function PaginatedProducts({
     queryParams,
     sortBy,
     countryCode,
+    priceRange:
+      priceMin !== undefined || priceMax !== undefined
+        ? { min: priceMin, max: priceMax }
+        : undefined,
   })
 
   const totalPages = Math.ceil(count / PRODUCT_LIMIT)
